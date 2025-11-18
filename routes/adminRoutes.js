@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { authenticateAdmin, verifyToken } = require('../middleware/auth');
+const { authenticateAdmin } = require('../middleware/auth');
 const {
   setupAdmin,
   loginAdmin,
@@ -30,8 +30,8 @@ const {
 router.post('/setup', setupAdmin);
 router.post('/login', loginAdmin);
 
-// Token verification only (not admin-specific)
-router.get('/me', verifyToken, getAdminProfile);
+// Admin profile (controller handles token verification)
+router.get('/me', getAdminProfile);
 
 // Protected admin routes (with authenticateAdmin middleware)
 router.get('/dashboard', authenticateAdmin, getDashboard);
