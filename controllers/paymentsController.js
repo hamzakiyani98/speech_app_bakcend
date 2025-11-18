@@ -1,4 +1,4 @@
-const db = require('../config/database');
+const { db } = require('../config/database');
 const { logAdminAction } = require('../utils/adminLogger');
 
 // Helper functions from server.js

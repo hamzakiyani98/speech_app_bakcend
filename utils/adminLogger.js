@@ -1,4 +1,4 @@
-const db = require('../config/database');
+const { db } = require('../config/database');
 
 // Log admin action
 const logAdminAction = async (adminId, action, targetType = null, targetId = null, details = {}, req = null) => {
