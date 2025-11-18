@@ -1,4 +1,4 @@
-const db = require('../config/database');
+const { db } = require('../config/database');
 
 // Track user activity
 const trackActivity = async (userId, activityType, entityType = null, entityId = null, activityData = {}, durationSeconds = 0) => {
