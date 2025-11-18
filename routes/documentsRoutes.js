@@ -2,12 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 // Import middleware
-const {
-  authenticateToken,
-  checkFeatureAccess,
-  requirePremiumOrTrial
-} = require('../middleware');
-const upload = require('../middleware/upload');
+const { authenticateToken } = require('../middleware/auth');
+const { checkFeatureAccess, requirePremiumOrTrial } = require('../middleware/featureAccess');
+const { upload } = require('../middleware/upload');
 
 // Import controllers
 const {
@@ -23,13 +20,17 @@ const {
   translateDocument,
   processVoiceCommand,
   createDocumentFromUrl,
-  saveDocumentPosition,
-  getDocumentPosition,
   extractUrl,
   extractMultipleUrls,
   getOCRQuotaInfo,
   getOCRUsage
 } = require('../controllers/documentsController');
+
+// Import position functions from reading sessions controller
+const {
+  saveDocumentPosition,
+  getDocumentPosition
+} = require('../controllers/readingSessionsController');
 
 // Upload document (root POST)
 router.post('/', authenticateToken, checkFeatureAccess, upload.single('file'), uploadDocument);
@@ -61,8 +62,8 @@ router.post('/:id/translate', authenticateToken, checkFeatureAccess, requirePrem
 // Voice command route
 router.post('/:id/voice-command', processVoiceCommand);
 
-// Position routes (placeholders)
-router.post('/:documentId/position', saveDocumentPosition);
-router.get('/:documentId/position', getDocumentPosition);
+// Position routes
+router.post('/:documentId/position', authenticateToken, saveDocumentPosition);
+router.get('/:documentId/position', authenticateToken, getDocumentPosition);
 
 module.exports = router;
